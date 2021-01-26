@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "NODE_ENV=test node node_modules/mocha/bin/mocha"
+    "test": "NODE_ENV=test node_modules/mocha/bin/mocha"
   },
   "license": "ISC",
   "devDependencies": {
@@ -14,15 +14,19 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "connect-flash": "^0.1.1",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.0",
     "express-session": "^1.17.1",
+    "helmet": "^4.4.1",
     "morgan": "^1.10.0",
+    "node": "^15.4.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pg": "^8.5.1",
-    "sequelize": "^6.4.0"
+    "sequelize": "^6.4.0",
+    "win-node-env": "^0.4.0"
   }
 }
