@@ -1,3 +1,8 @@
+body {
+  background-color: rgba(238, 185, 231, 0.199);
+  margin: 0 auto;
+}
+
 nav ul li {
   text-decoration: none;
   display: inline-block;
@@ -5,7 +10,14 @@ nav ul li {
 }
 
 h1 {
-  color: chartreuse;
+  color: rgb(84, 112, 56);
+}
+h2 {
+  font-family: 'Montserrat', sans-serif;
+}
+
+h3 {
+  font-family: 'Montserrat', sans-serif;
 }
 
 .alert-container {
@@ -13,6 +25,9 @@ h1 {
   margin: 0 auto;
   margin-bottom: 3em;
   box-shadow: 6px 9px 9px 2px #afafaf;
+}
+p {
+  font-family: 'Lora', serif;
 }
 
 .alert {
@@ -22,6 +37,7 @@ h1 {
   color: white;
 }
 
+
 .error {
   border: 3px solid crimson;
   background-color: rgb(148, 27, 51);
@@ -30,4 +46,17 @@ h1 {
 .success {
   border: 3px solid forestgreen;
   background-color: rgb(21, 85, 21);
+}
+
+button {
+  font-family: 'Lora', serif;
+}
+
+input[type=text] {
+  font-family: 'Montserrat', sans-serif;
+  color: black;
+}
+
+ul li {
+  font-family: 'Lora', serif;
 }
