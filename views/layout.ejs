@@ -1,25 +1,23 @@
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cocktail App</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <!-- <link href="https://fonts.googleapis.com/css2?family=Lora&family=Montserrat:wght@300&display=swap" rel="stylesheet”> -->
-  <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cocktail Book</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="/auth/signup">Signup</a></li>
-        <li><a href="/auth/login">Login</a></li>
-        <li><a href="/auth/logout">Logout</a></li>
-        <li><a href="/Favorites">Favorites</a></li>
-        <li><a href="/search">Search</a></li>
-      </ul>
-    </nav>
-  </header>
-  <h1>Cocktail App</h1>
-  <%- include('./partials/alerts.ejs') %>
-  <%- body %>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/auth/signup">Signup</a></li>
+                <li><a href="/auth/login">Login</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
+                <li><a href="/favorites">Favorites</a></li>
+                <li><a href="/search">Search</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1>Cocktail Book</h1>
+    <%- include('./partials/alerts.ejs') %>
+        <%- body %>
 </body>>

@@ -21,15 +21,15 @@ app.use(layouts);
 // app.use(helmet());
 // Not good for doing during practice
 app.use(
-  helmet({
-    contentSecurityPolicy: false,
-  })
+    helmet({
+        contentSecurityPolicy: false,
+    })
 );
 
 app.use(session({
-  secret: process.env.SESSION_SECRET, // should be an ENV variable
-  resave: false,
-  saveUninitialized: true
+    secret: process.env.SESSION_SECRET, // should be an ENV variable
+    resave: false,
+    saveUninitialized: true
 }));
 
 // Init passport config MUST HAPPEN AFTER SESSION CONFIG
@@ -39,87 +39,97 @@ app.use(flash());
 
 // Write custom middleware to access the user on every response
 app.use((req, res, next) => {
-  let alerts = req.flash();
-  console.log(alerts);
-  res.locals.alerts = alerts;
-  res.locals.currentUser = req.user;
-  next();
+    let alerts = req.flash();
+    console.log(alerts);
+    res.locals.alerts = alerts;
+    res.locals.currentUser = req.user;
+    next();
 });
 
-// ROUTES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ROUTES 
 
 app.get('/', (req, res) => {
-  res.render('index');
+    res.render('index');
 });
 
 app.get('/favorites', isLoggedIn, (req, res) => {
-  res.render('favorites');
+    res.render('favorites');
 });
 
 app.get('/search', (req, res) => {
-  res.render('search')
+    res.render('search')
 });
+
 
 // Get route for show
 app.get('/show', (req, res) => {
-  res.render('show')
+    res.render('show')
 });
 
 // Route for searching by cocktail name
 app.post('/search', (req, res) => {
-  console.log('enter function');
-  console.log(req.body.name);
-  const cocktailName = req.body.name
-  if (cocktailName) {
-    const URL2 = `https://www.thecocktaildb.com/api/json/v1/1/search.php?`
-    axios.get(`${URL2}s=${cocktailName}`)
-      .then(response => {
-        console.log('response');
-        // console.log(response);
-        let matchByCocktailName = response.data
-        console.log(matchByCocktailName);
-        res.render('show', { matchByCocktailName: matchByCocktailName })
-      })
-    const ingredientName = req.query.name
-  } else if (ingredientName) {
-    const URL = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?`
-    axios.get(`${URL}i=${ingredientName}`)
-      .then(response => {
-        let matchByIngredient = response.data
-        res.render('show', {
-          matchByIngredient: matchByIngredient
-        })
-      })
-  }
+    console.log('enter function');
+    console.log(req.body.name);
+    const cocktailName = req.body.name
+    if (cocktailName) {
+        const URL2 = `https://www.thecocktaildb.com/api/json/v1/1/search.php?`
+        axios.get(`${URL2}s=${cocktailName}`)
+            .then(response => {
+                console.log('response');
+                // console.log(response);
+                let matchByCocktailName = response.data
+                console.log(matchByCocktailName);
+                res.render('show', { matchByCocktailName: matchByCocktailName })
+            })
+        const ingredientName = req.query.name
+    } else if (ingredientName) {
+        const URL = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?`
+        axios.get(`${URL}i=${ingredientName}`)
+            .then(response => {
+                let matchByIngredient = response.data
+                res.render('show', {
+                    matchByIngredient: matchByIngredient
+                })
+            })
+    }
 });
 
- // Route for searching by ingredient
- app.post('/search', (req, res) => {
- const ingredientName = req.query.name
- const URL = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?`
- axios.get(`${URL}i=${ingredientName}`)
- .then(response => {
-   let matchByIngredient = response.data
-  res.render('show', {
-    matchByIngredient : matchByIngredient
-  })
- })
- });
+// Route for searching by ingredient
+app.post('/search', (req, res) => {
+    const ingredientName = req.query.name
+    const URL = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?`
+    axios.get(`${URL}i=${ingredientName}`)
+        .then(response => {
+            let matchByIngredient = response.data
+            res.render('show', {
+                matchByIngredient: matchByIngredient
+            })
+        })
+});
 
-
+//HELMETS SUCK
+//app.use(
+// helmet.contentSecurityPolicy({
+//  directives: {
+//  "default-src": ["'self'", "https://www.thecocktaildb.com/images/media/drink/vrwquq1478252802.jpg/preview"],
+//  "img-src": ["'self'", "https://www.thecocktaildb.com/images/media/drink/vrwquq1478252802.jpg/preview"]
+//},
+//})
+//);
 
 // post route 
 app.post('/favorites', (req, res) => {
-  console.log(req.body);
+    console.log(req.body);
+});
+app.get('/favorites', isLoggedIn, (req, res) => {
+    req.user.getuDrinks()
+        .then(drinks => {
+            res.render('favorites', { drinks: drinks })
+        })
+    console.log(req.body);
+    res.render('favorites')
 });
 
-
-// axios.get(cocktailSearchURL)
-//   .then(response => {
-//     console.log(response.data);
-//   }).catch(err => {
-//     console.log(err);
-//   });
 
 app.use('/auth', require('./routes/auth'));
 

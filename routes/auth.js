@@ -24,7 +24,6 @@ router.post('/signup', (req, res) => {
     // if the user WAS created
     if (created) {
       console.log(`😎 ${user.name} was created!`);
-      // authenticat and redirect to homepage or profile
       passport.authenticate('local', {
         successRedirect: '/',
         successFlash: 'Successful account creation'
