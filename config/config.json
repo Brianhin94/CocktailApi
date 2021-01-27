@@ -1,24 +1,23 @@
 {
-  "development": {
-    "username": "postgres",
-    "password": "Breslin66",
-    "database": "express_auth_development",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
-  },
-  "test": {
-    "username": "postgres",
-    "password": "Breslin66",
-    "database": "express_auth_development",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
-  },
-  "production": {
-    "username": "postgres",
-    "password": "Breslin66",
-    "database": "express_auth_production",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
-  }
+    "development": {
+        "username": "postgres",
+        "password": "Breslin66",
+        "database": "cocktail_development",
+        "host": "127.0.0.1",
+        "dialect": "postgres"
+    },
+    "test": {
+        "username": "postgres",
+        "password": "Breslin66",
+        "database": "cocktail_test",
+        "host": "127.0.0.1",
+        "dialect": "postgres"
+    },
+    "production": {
+        "username": "postgres",
+        "password": "Breslin66",
+        "database": "cocktail_production",
+        "host": "127.0.0.1",
+        "dialect": "postgres"
+    }
 }
-

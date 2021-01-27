@@ -9,34 +9,32 @@ const flash = require('connect-flash');
 const helmet = require('helmet');
 const passport = require('./config/ppConfig');
 const isLoggedIn = require('./middleware/isLoggedIn');
+const db = require('./models');
 const app = express();
+const methodOverride = require ('method-override');
 
+app.use(methodOverride('_method'))
 app.set('view engine', 'ejs');
-
 app.use(require('morgan')('dev'));
 // allows us to read form sent body data
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use(layouts);
 // app.use(helmet());
-// Not good for doing during practice
 app.use(
     helmet({
         contentSecurityPolicy: false,
     })
 );
-
 app.use(session({
     secret: process.env.SESSION_SECRET, // should be an ENV variable
     resave: false,
     saveUninitialized: true
 }));
-
 // Init passport config MUST HAPPEN AFTER SESSION CONFIG
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-
 // Write custom middleware to access the user on every response
 app.use((req, res, next) => {
     let alerts = req.flash();
@@ -45,28 +43,57 @@ app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     next();
 });
-
-// ROUTES 
-
+// routes
 app.get('/', (req, res) => {
     res.render('index');
 });
-
-app.get('/favorites', isLoggedIn, (req, res) => {
-    res.render('favorites');
+app.get('/profile', isLoggedIn, (req, res) => {
+    res.render('profile');
 });
-
 app.get('/search', (req, res) => {
     res.render('search')
 });
-
 
 // Get route for show
 app.get('/show', (req, res) => {
     res.render('show')
 });
-
-// Route for searching by cocktail name
+// GET AND POST ROUTE for favorites
+app.get('/favorites', isLoggedIn, (req, res) => {
+    // console.log(req.body);
+    req.user.getCocktails()
+        .then(drinks => {
+            res.render('favorites', { drinks: drinks })
+        })
+});
+app.post('/favorites', isLoggedIn, (req, res) => {
+    console.log(req);
+    //find current userID and get cocktail name
+    // res.redirect('/favorites')
+    db.user.findOrCreate({
+            where: {
+                id: req.user.id
+            }
+        }).then(([user, created]) => {
+            db.cocktail.findOrCreate({
+                where: {
+                    name: req.body.name
+                }
+            }).then(([cocktail, created]) => {
+                user.addCocktail(cocktail).then(relationInfo => {
+                    console.log(`${cocktail.name} added to ${user.name}`);
+                    res.redirect('/favorites')
+                })
+            })
+        }).catch(error => {
+            res.send(error)
+            console.log(error)
+        })
+        // res.send(req.body.name)
+        // res.send(req.params)
+        //
+});
+// Route for searching by cocktail name // combined route for searching by ingredient with an if else statement
 app.post('/search', (req, res) => {
     console.log('enter function');
     console.log(req.body.name);
@@ -94,45 +121,18 @@ app.post('/search', (req, res) => {
     }
 });
 
-// Route for searching by ingredient
-app.post('/search', (req, res) => {
-    const ingredientName = req.query.name
-    const URL = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?`
-    axios.get(`${URL}i=${ingredientName}`)
-        .then(response => {
-            let matchByIngredient = response.data
-            res.render('show', {
-                matchByIngredient: matchByIngredient
-            })
-        })
-});
-
-//HELMETS SUCK
-//app.use(
-// helmet.contentSecurityPolicy({
-//  directives: {
-//  "default-src": ["'self'", "https://www.thecocktaildb.com/images/media/drink/vrwquq1478252802.jpg/preview"],
-//  "img-src": ["'self'", "https://www.thecocktaildb.com/images/media/drink/vrwquq1478252802.jpg/preview"]
-//},
-//})
-//);
-
-// post route 
-app.post('/favorites', (req, res) => {
-    console.log(req.body);
-});
-app.get('/favorites', isLoggedIn, (req, res) => {
-    req.user.getuDrinks()
-        .then(drinks => {
-            res.render('favorites', { drinks: drinks })
-        })
-    console.log(req.body);
-    res.render('favorites')
-});
-
+app.delete('/favorites', function (req, res) {
+    console.log(req.params.name);
+})
+//app.delete('/favorites', function (req, res) {
+  //  console.log("DELETE favorite")
+   // uDrinks.findByIdAndRemove(req.params.id).then((review) => {
+   //   res.redirect('/');
+   // }).catch((err) => {
+   //   console.log(err.message);
+   // })
+  //})
 
 app.use('/auth', require('./routes/auth'));
-
 var server = app.listen(process.env.PORT || 3000, () => console.log(`🎧You're listening to the smooth sounds of port ${process.env.PORT || 3000}🎧`));
-
 module.exports = server;
