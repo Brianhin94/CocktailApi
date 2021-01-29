@@ -1,17 +1,18 @@
 <h1>Book Page</h1>
 
-<h2>Welcome to your book <%= currentUser.name %> </h2>
+<h2>Welcome to your book <%= currentUser.name %>
+</h2>
 
 <h3>My Favorites</h3>
 
 <p>I have <%= drinks.length %> favorites!</p>
 
-<% drinks.forEach(drink => { %>
+<% drinks.forEach(drink=> { %>
     <div class="fav">
         <h3>
             <a href="/favorites/<%= drink.name %>">
                 <%= drink.name %>
-                <%= drink.id %>
+                    <%= drink.id %>
             </a>
         </h3>
         <form method="POST" action='/favorites/<%= drink.name %> ?_method=DELETE'>
@@ -20,4 +21,4 @@
             <input type="submit" value="Remove from favorites">
         </form>
     </div>
-<% }); %>
+    <% }); %>

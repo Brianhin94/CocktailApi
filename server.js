@@ -14,7 +14,6 @@ const methodOverride = require('method-override');
 app.set('view engine', 'ejs');
 
 app.use(require('morgan')('dev'));
-// allows us to read form sent body data
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use(layouts);
@@ -26,17 +25,17 @@ app.use(
 );
 
 app.use(session({
-  secret: process.env.SESSION_SECRET, // should be an ENV variable
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }));
 
-// Init passport config MUST HAPPEN AFTER SESSION CONFIG
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-// Write custom middleware to access the user on every response
+
 app.use((req, res, next) => {
   let alerts = req.flash();
   console.log(alerts);
@@ -47,7 +46,7 @@ app.use((req, res, next) => {
 
 app.use(methodOverride('_method'));
 
-// ROUTES ~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!
+
 
 app.get('/', (req, res) => {
   res.render('index');
@@ -61,43 +60,43 @@ app.get('/search', (req, res) => {
   res.render('search')
 });
 
-// Get route for show
+
 app.get('/show', (req, res) => {
   res.render('show')
 });
 
-// GET AND POST ROUTE for favorites
+
 app.get('/favorites', isLoggedIn, (req, res) => {
   req.user.getCocktails()
-  .then(drinks => {
-    res.render('favorites', {drinks : drinks})
-  })
+    .then(drinks => {
+      res.render('favorites', { drinks: drinks })
+    })
 });
 
 app.post('/favorites', isLoggedIn, (req, res) => {
   console.log(req);
   db.user.findOrCreate({
     where: {
-        id: req.user.id
+      id: req.user.id
     }
   }).then(([user, created]) => {
-      db.cocktail.findOrCreate({
-          where: {
-              name: req.body.name
-          }
-      }).then(([cocktail, created]) => {
-          user.addCocktail(cocktail).then(relationInfo => {
-              console.log(`${cocktail.name} added to ${user.name}`);
-              res.redirect('/favorites')
-          })
+    db.cocktail.findOrCreate({
+      where: {
+        name: req.body.name
+      }
+    }).then(([cocktail, created]) => {
+      user.addCocktail(cocktail).then(relationInfo => {
+        console.log(`${cocktail.name} added to ${user.name}`);
+        res.redirect('/favorites')
       })
+    })
   }).catch(error => {
     res.send(error)
-      console.log(error)
+    console.log(error)
   })
 });
 
-// Route for searching by cocktail name // combined route for searching by ingredient with an if else statement
+
 app.post('/search', (req, res) => {
   console.log('enter function');
   console.log(req.body.name);
@@ -124,12 +123,13 @@ app.post('/search', (req, res) => {
   }
 });
 
-// Route for deleting a favorite from favorites page
 app.delete('/favorites/:id', function (req, res) {
   console.log(req.user.id);
-  db.cocktail.destroy({where: {
-    id : req.body.id
-  }}).then(() => {
+  db.cocktail.destroy({
+    where: {
+      id: req.body.id
+    }
+  }).then(() => {
     res.redirect('/favorites')
   })
 });
