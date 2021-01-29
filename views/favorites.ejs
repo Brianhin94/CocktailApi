@@ -1,20 +1,23 @@
-<h1>Profile Page</h1>
+<h1>Book Page</h1>
 
-<h2>Welcome to your PROFILE <%= currentUser.name %> </h2>
+<h2>Welcome to your book <%= currentUser.name %> </h2>
 
 <h3>My Favorites</h3>
 
 <p>I have <%= drinks.length %> favorites!</p>
-<p><form method="POST" action="/favorites" method= "DELETE">
-    <button type="submit">Delete</button>
-</form></p>
 
 <% drinks.forEach(drink => { %>
     <div class="fav">
         <h3>
             <a href="/favorites/<%= drink.name %>">
                 <%= drink.name %>
+                <%= drink.id %>
             </a>
         </h3>
+        <form method="POST" action='/favorites/<%= drink.name %> ?_method=DELETE'>
+            <input type="hidden" name="id" value="<%= drink.id %>">
+            <input type="hidden" name="drinkName" value="<%= drink.name %>">
+            <input type="submit" value="Remove from favorites">
+        </form>
     </div>
 <% }); %>

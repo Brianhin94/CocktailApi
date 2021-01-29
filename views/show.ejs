@@ -1,14 +1,8 @@
-<div id="cocktailList">
-    <% if(matchByCocktailName) { %>
-        <p><%= matchByCocktailName %></p>
-    <% } else { %>
-        <p><%= matchByCocktailIngredient.strIngredient1 %></p>
-    <% } %>
-    </div>
+
 <div class="cocktails-container">
     <% matchByCocktailName.drinks.forEach(function(drink) { %>
         <div class="small-container">
-            <h4><%= drink.strDrink %></h4>
+            <h2><%= drink.strDrink %></h2>
             <p><%= drink.strInstructions %>
             <img src= <%= drink.strDrinkThumb %> />
             <form method="POST" action="/favorites">

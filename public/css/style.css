@@ -1,16 +1,28 @@
 body {
-    background-color: rgba(238, 185, 231, 0.199);
+    background-color: rgba(14, 233, 98, 0.199);
     margin: 0 auto;
+    flex-wrap: wrap;
+    flex-grow: inherit;
+    text-align: center;
+    font-family: cursive; 
 }
 
+
 nav ul li {
-    text-decoration: none;
+    font-family: cursive;
     display: inline-block;
     margin-right: .3em;
 }
 
 h1 {
-    color: rgb(84, 112, 56);
+    color: rgb(19, 164, 231);
+    text-align: center;
+    text-shadow: crimson;
+}
+.cocktail-container {
+    margin: 100px;
+    padding: 50px;
+    text-align: center;
 }
 
 .alert-container {
@@ -39,4 +51,9 @@ h1 {
 
 button {
     font-family: 'Lora', serif;
+}
+
+img {
+height: 200px;
+width: 200px;
 }

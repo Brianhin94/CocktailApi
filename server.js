@@ -2,8 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const layouts = require('express-ejs-layouts');
 const axios = require('axios');
-// const cocktailSearchURL = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita`;
-// const ingredientSearchURL = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=vodka`;
 const session = require('express-session');
 const flash = require('connect-flash');
 const helmet = require('helmet');
@@ -11,7 +9,7 @@ const passport = require('./config/ppConfig');
 const isLoggedIn = require('./middleware/isLoggedIn');
 const db = require('./models');
 const app = express();
-const methodOverride = require ('method-override');
+const methodOverride = require('method-override');
 
 app.use(methodOverride('_method'))
 app.set('view engine', 'ejs');
@@ -71,27 +69,25 @@ app.post('/favorites', isLoggedIn, (req, res) => {
     //find current userID and get cocktail name
     // res.redirect('/favorites')
     db.user.findOrCreate({
+        where: {
+            id: req.user.id
+        }
+    }).then(([user, created]) => {
+        db.cocktail.findOrCreate({
             where: {
-                id: req.user.id
+                name: req.body.name
             }
-        }).then(([user, created]) => {
-            db.cocktail.findOrCreate({
-                where: {
-                    name: req.body.name
-                }
-            }).then(([cocktail, created]) => {
-                user.addCocktail(cocktail).then(relationInfo => {
-                    console.log(`${cocktail.name} added to ${user.name}`);
-                    res.redirect('/favorites')
-                })
+        }).then(([cocktail, created]) => {
+            user.addCocktail(cocktail).then(relationInfo => {
+                console.log(`${cocktail.name} added to ${user.name}`);
+                res.redirect('/favorites')
             })
-        }).catch(error => {
-            res.send(error)
-            console.log(error)
         })
-        // res.send(req.body.name)
-        // res.send(req.params)
-        //
+    }).catch(error => {
+        res.send(error)
+        console.log(error)
+    })
+
 });
 // Route for searching by cocktail name // combined route for searching by ingredient with an if else statement
 app.post('/search', (req, res) => {
@@ -121,18 +117,21 @@ app.post('/search', (req, res) => {
     }
 });
 
-app.delete('/favorites', function (req, res) {
-    console.log(req.params.name);
-})
-//app.delete('/favorites', function (req, res) {
-  //  console.log("DELETE favorite")
-   // uDrinks.findByIdAndRemove(req.params.id).then((review) => {
-   //   res.redirect('/');
-   // }).catch((err) => {
-   //   console.log(err.message);
-   // })
-  //})
+app.delete('/favorites/:id', function (req, res) {
+    console.log(req.user.id);
+    db.cocktail.destroy({where: {
+      id : req.body.id
+    }}).then(() => {
+      res.redirect('/favorites')
+    })
+
+    //db.cocktail.removeCocktail(req.params.id).then((favorites) => {
+      //  res.redirect('/');
+    //}).catch((err) => {
+      //  console.log(err.message);
+    //})
+});
 
 app.use('/auth', require('./routes/auth'));
-var server = app.listen(process.env.PORT || 3000, () => console.log(`🎧You're listening to the smooth sounds of port ${process.env.PORT || 3000}🎧`));
+var server = app.listen(process.env.PORT || 3001, () => console.log(`🎧You're listening to the smooth sounds of port ${process.env.PORT || 3000}🎧`));
 module.exports = server;
