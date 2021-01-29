@@ -5,6 +5,7 @@ body {
     flex-grow: inherit;
     text-align: center;
     font-family: cursive; 
+    grid-auto-flow: column;
 }
 
 
@@ -18,11 +19,6 @@ h1 {
     color: rgb(19, 164, 231);
     text-align: center;
     text-shadow: crimson;
-}
-.cocktail-container {
-    margin: 100px;
-    padding: 50px;
-    text-align: center;
 }
 
 .alert-container {

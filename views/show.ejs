@@ -2,7 +2,7 @@
 <div class="cocktails-container">
     <% matchByCocktailName.drinks.forEach(function(drink) { %>
         <div class="small-container">
-            <h2><%= drink.strDrink %></h2>
+            <h4><%= drink.strDrink %></h4>
             <p><%= drink.strInstructions %>
             <img src= <%= drink.strDrinkThumb %> />
             <form method="POST" action="/favorites">
