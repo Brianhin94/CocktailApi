@@ -1,11 +1,12 @@
 body {
+   display: flex;
     background-color: rgba(14, 233, 98, 0.199);
-    margin: 0 auto;
-    flex-wrap: wrap;
-    flex-grow: inherit;
     text-align: center;
     font-family: cursive; 
-    grid-auto-flow: column;
+    justify-content: center;
+    flex-direction: column;
+    padding: 100px;
+    margin: 100px;
 }
 
 
@@ -13,6 +14,8 @@ nav ul li {
     font-family: cursive;
     display: inline-block;
     margin-right: .3em;
+    border: 2px;
+    border-style: dotted;
 }
 
 h1 {
@@ -44,12 +47,28 @@ h1 {
     border: 3px solid forestgreen;
     background-color: rgb(21, 85, 21);
 }
+p {
+    border: 2px;
+    border-style: groove;
+    flex-wrap: wrap;
+    text-align: center;
+}
 
 button {
-    font-family: 'Lora', serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 img {
-height: 200px;
-width: 200px;
+    height: 50px;
+    width: 50px;
+    margin: 10px;
+    padding: 10px;
 }
+
+div {
+    background-color: burlywood;
+    width: 400px;
+    height: 400px;
+  
+}
+
