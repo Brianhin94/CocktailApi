@@ -48,10 +48,13 @@ h1 {
     background-color: rgb(21, 85, 21);
 }
 p {
+    display: flex;
+    flex-flow: row;
     border: 2px;
     border-style: groove;
     flex-wrap: wrap;
     text-align: center;
+    align-content: space-between;
 }
 
 button {
@@ -65,10 +68,15 @@ img {
     padding: 10px;
 }
 
+
 div {
+    display: flex;
+    flex-flow: column;
     background-color: burlywood;
     width: 400px;
     height: 400px;
-  
+    margin: 50px;
+    padding: 50px;
+    text-shadow: lightcoral;
 }
 
